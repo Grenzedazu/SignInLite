@@ -1,5 +1,6 @@
+var data = {}
 const { message: { checkSignature } } = require('../qcloud')
-
+var processor = require('processor')
 /**
  * 响应 GET 请求（响应微信配置时的签名检查请求）
  */
@@ -17,13 +18,20 @@ async function post (ctx, next) {
     /**
      * 解析微信发送过来的请求体
      * 可查看微信文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/custommsg/receive.html#接收消息和事件
-     */
+     */ 
+
     const body = ctx.request.body
 
-    ctx.body = 'success'
+    if(processor.isTasked(body.header.task) === undefined){
+      setTimeout(processor.toExcel(body.header.task), 1000 * 60 * 3)
+    }
+    processor.processor(body.header.task, body.data)
+    
+    ctx.body = body
+
 }
 
 module.exports = {
     post,
-    get
+    get,
 }

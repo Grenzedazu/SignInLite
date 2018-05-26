@@ -57,3 +57,4 @@
         </navigator>
     </view>
 </view>
+<button bindtap='redir'>签到</button>

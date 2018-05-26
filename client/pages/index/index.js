@@ -216,5 +216,26 @@ Page({
         }
         util.showBusy('信道连接中...')
         this.setData({ tunnelStatus: 'closed' })
+    },
+    redir: function() {
+      wx.redirectTo({
+        url: '../qiandao/qiandao',
+      })
+    }
+    ,
+    sign: function(){
+      wx.request({
+        url: config.service.POSTUrl,
+        data: '',
+        header: {},
+        method: 'POST',
+        dataType: 'json',
+        responseType: 'text',
+        success: function(res) {
+          console.log(res)
+        },
+        fail: function(res) {},
+        complete: function(res) {},
+      })
     }
 })
