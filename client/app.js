@@ -11,4 +11,12 @@ App({
       names: ['stu_name', 'stu_ID', 'Class'],
       tags: ['姓名', '学号', '班级']
     }
+  ,
+  onHide: function(){
+    wx.removeStorage({
+      key: 'Baseline',
+      success: function(res) {
+      },
+    })
+  }
 })

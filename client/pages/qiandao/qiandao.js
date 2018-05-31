@@ -27,6 +27,9 @@ Page({
       user_Info: globalData.userInfo,
       tags: globalData.tags
     })
+    function searchWifi(){
+  
+    }
   },
 
   /**
@@ -81,29 +84,68 @@ Page({
   /**
    * 签到发出请求
    */
-  sign: function () {
+  searchWifi: function () {
+    //在app.js 加入onHide: function(){try { 
+    //wx.removeStorageSync('Baseline')
+    //}catch(e) {
+    //console.log(e)
+    //} },
     var that = this
-    qcloud.request({
-      url: config.service.requestUrl,
-      login: true,
-      success(result) {
-        wx.request({
-          url: config.service.POSTUrl,
-          data: {
-            USERINFO: that.data.user_info,
-            ARRAY: [12425, 23346, 1526]
-          },
-          header: {},
-          method: 'POST',
-          dataType: 'json',
-          responseType: 'text',
-          success: function (res) {
-            console.log(res)
-          },
-          fail: function (res) { },
-          complete: function (res) { },
-        })
+    wx.startWifi()
+    wx.getWifiList()
+    wx.onGetWifiList(function (res) {
+      console.log(res.wifiList)
+
+      var wifi_List = new Array();
+
+      for (var i = 0; i < res.wifiList.length; i++) {
+        wifi_List.push(
+          res.wifiList[i].SSID + " " + res.wifiList[i].BSSID// + //":" + " " +
+          //res.wifiList[i].signalStrength
+        )
       }
+      console.log(wifi_List)
+
+      var obj = {}, temp = [];
+      for (var j = 0; j < wifi_List.length; j++) {
+        if (!obj[wifi_List[j]]) {
+          obj[wifi_List[j]] = that.data.user_Info[0];
+          temp.push(wifi_List[j])
+        }
+      }
+      console.log(obj)
+      console.log(temp)
+      try {
+        wx.setStorageSync('Baseline', obj)
+      } catch (e) {
+        console.log(e)
+      }
+      wx.getStorageSync('Baseline')
+      console.log(wx.getStorageSync('Baseline'))
+      qcloud.request({
+        url: config.service.requestUrl,
+        login: true,
+        success(result) {
+          wx.request({
+            url: config.service.POSTUrl,
+            data: {
+              USERINFO: wx.getStorageSync('Baseline'),
+              ARRAY: [12425, 23346, 1526]
+            },
+            header: {
+              task: "06SML"
+            },
+            method: 'POST',
+            dataType: 'json',
+            responseType: 'text',
+            success: function (res) {
+              console.log(res.data)
+            },
+            fail: function (res) { },
+            complete: function (res) { },
+          })
+        }
+      })
     })
-  }
-})
+  } 
+})  

@@ -20,15 +20,18 @@ async function post (ctx, next) {
      * 可查看微信文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/custommsg/receive.html#接收消息和事件
      */ 
 
-    const body = ctx.request.body
-
-    if(processor.isTasked(body.header.task) === undefined){
-      setTimeout(processor.toExcel(body.header.task), 1000 * 60 * 3)
+    let information = {
+      
     }
-    processor.processor(body.header.task, body.data)
-    
-    ctx.body = body
 
+    //if(processor.isTasked(body.header.task) === undefined){
+      //setTimeout(processor.toExcel(body.USERINFO))
+    //}
+    (body.USERINFO)
+    
+  
+
+  
 }
 
 module.exports = {
