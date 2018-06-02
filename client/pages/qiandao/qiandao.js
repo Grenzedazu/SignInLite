@@ -1,4 +1,3 @@
-var qcloud = require('../../vendor/wafer2-client-sdk/index')
 var config = require('../../config')
 var util = require('../../utils/util.js')
 
@@ -9,6 +8,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    task: null,
+    issue: null,
+    sign: null,
+    wifi: null
   },
 
   /**
@@ -122,30 +125,28 @@ Page({
       }
       wx.getStorageSync('Baseline')
       console.log(wx.getStorageSync('Baseline'))
-      qcloud.request({
-        url: config.service.requestUrl,
-        login: true,
-        success(result) {
-          wx.request({
+      //
+      wx.request({
             url: config.service.POSTUrl,
             data: {
-              USERINFO: wx.getStorageSync('Baseline'),
-              ARRAY: [12425, 23346, 1526]
-            },
-            header: {
-              task: "06SML"
+              task: "xxxxxx",
+              issue: "xxxxxxxx",
+              sign:"Kevin",
+              wifi: wx.getStorageSync('Baseline'),
+
             },
             method: 'POST',
-            dataType: 'json',
-            responseType: 'text',
+            header: {
+              'content-type': 'application/json'
+            },
             success: function (res) {
               console.log(res.data)
             },
-            fail: function (res) { },
+            fail: function (res) {
+              console.log(res.data)
+             },
             complete: function (res) { },
           })
-        }
-      })
-    })
-  } 
+        })
+    } 
 })  

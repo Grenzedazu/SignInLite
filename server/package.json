@@ -5,10 +5,9 @@
     "main": "app.js",
     "scripts": {
         "start": "pm2 start process.prod.json --no-daemon",
-        "dev": "nodemon --config nodemon.json app.js",
-        "initdb": "npm install && node tools/initdb.js"
+        "dev": "nodemon --config nodemon.json app.js"
     },
-    "author": "Jason",
+    "author": "Levin",
     "license": "MIT",
     "dependencies": {
         "axios": "^0.15.3",

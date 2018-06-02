@@ -1,40 +1,30 @@
-var data = {}
-const { message: { checkSignature } } = require('../qcloud')
-var processor = require('processor')
-/**
- * 响应 GET 请求（响应微信配置时的签名检查请求）
- */
-async function get (ctx, next) {
-    const { signature, timestamp, nonce, echostr } = ctx.query
-    if (checkSignature(signature, timestamp, nonce)) ctx.body = echostr
-    else ctx.body = 'ERR_WHEN_CHECK_SIGNATURE'
-}
-
-async function post (ctx, next) {
-    // 检查签名，确认是微信发出的请求
-    const { signature, timestamp, nonce } = ctx.query
-    if (!checkSignature(signature, timestamp, nonce)) ctx.body = 'ERR_WHEN_CHECK_SIGNATURE'
-
-    /**
-     * 解析微信发送过来的请求体
-     * 可查看微信文档：https://mp.weixin.qq.com/debug/wxadoc/dev/api/custommsg/receive.html#接收消息和事件
-     */ 
-
-    let information = {
-      
-    }
-
-    //if(processor.isTasked(body.header.task) === undefined){
-      //setTimeout(processor.toExcel(body.USERINFO))
-    //}
-    (body.USERINFO)
-    
-  
-
-  
-}
-
+const config = require('../config');
+const processor = require('./processor.js');
+// 连接数据库
+const knex = require('knex')(config.db);
 module.exports = {
-    post,
-    get,
+    hello: async (ctx, next) => {
+        return ctx.response.body = 'Hello world';
+    },
+    insert: async (ctx, next) => {
+        console.log(ctx.request.body);
+        let mydate = new Date();
+        let information = {
+            task: ctx.request.body.task,
+            issue: ctx.request.body.issue,
+            sign: ctx.request.body.sign,
+            wifi: ctx.request.body.wifi,
+            date: mydate.toLocaleDateString(),
+            time: mydate.toLocaleTimeString(),
+        };
+        await knex(config.recordName).insert(information)
+            .catch(function (e) {
+                console.error(e);
+            })
+            .then(
+                console.log("sign columns insert success")
+            );
+        console.log(information);
+        return ctx.response.body = ctx.request.body;
+    }
 }

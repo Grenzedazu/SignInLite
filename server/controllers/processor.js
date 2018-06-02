@@ -3,26 +3,26 @@ data = {}
 /**
  * 任务有没有挂载
  */
-var isTasked =function(task) {return data[tesk]}
+var isTasked = function (task) { return data[tesk] }
 
 /**
  * 挂任务
  */
-async function setTask(task, obj){
-  if (isTasked(task) === undefined){
+async function setTask(task, obj) {
+  if (isTasked(task) === undefined) {
     data[task] = []
   }
-    data[task].push(obj)
+  data[task].push(obj)
 }
 
 /**
  * 制表
  */
-var toExcel = function(task){
+var toExcel = function (task) {
   var taskObj = data[task]
   var array = makeArray(taskObj[0])
-  for(var j = 0; j < taskObj.length; j++){
-    
+  for (var j = 0; j < taskObj.length; j++) {
+
   }
 
   var myWb = new xl.Workbook();
@@ -60,12 +60,12 @@ var getRate = function (obj, array) {
 /**
  * 将对象制作成数组
  */
-var makeArray = function(obj){
+var makeArray = function (obj) {
   var array = []
-  for(var key in obj){
+  for (var key in obj) {
     array.push(key)
   }
-  
+
   return array;
 }
 
